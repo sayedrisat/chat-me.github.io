@@ -3,36 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chatbot</title>
+    <title>ChatBot - Preview</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; }
-        #chatbox { width: 300px; height: 400px; overflow-y: scroll; border: 1px solid black; padding: 10px; margin: auto; }
-        #userInput { width: 200px; padding: 5px; }
-        button { padding: 5px; }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+        .chat-container {
+            width: 50%;
+            margin: auto;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+        .chatbox {
+            height: 400px;
+            overflow-y: auto;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .message {
+            padding: 8px;
+            margin: 5px;
+            border-radius: 5px;
+            max-width: 80%;
+        }
+        .user { background: #0084ff; color: white; text-align: right; float: right; }
+        .bot { background: #eee; text-align: left; float: left; }
+        .input-area {
+            display: flex;
+            margin-top: 10px;
+        }
+        input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px;
+            background: #0084ff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .clearfix { clear: both; }
     </style>
 </head>
 <body>
-    <h1>Chatbot</h1>
-    <div id="chatbox"></div>
-    <input type="text" id="userInput" placeholder="Type a message...">
-    <button onclick="sendMessage()">Send</button>
+
+    <h2>ChatBot - AI Preview</h2>
+
+    <div class="chat-container">
+        <div id="chatbox" class="chatbox"></div>
+        
+        <div class="input-area">
+            <input type="text" id="userInput" placeholder="Type a message...">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
 
     <script>
-        async function sendMessage() {
-            let userMessage = document.getElementById("userInput").value;
-            document.getElementById("chatbox").innerHTML += `<p><b>You:</b> ${userMessage}</p>`;
-            document.getElementById("userInput").value = "";
+        function sendMessage() {
+            let userText = document.getElementById("userInput").value;
+            if (userText.trim() === "") return;
+            
+            let chatbox = document.getElementById("chatbox");
 
-            let response = await fetch("YOUR_MAKE_WEBHOOK_URL", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ "text": userMessage })
-            });
+            // Display user message
+            chatbox.innerHTML += `<div class="message user"><b>You:</b> ${userText}</div><div class="clearfix"></div>`;
+            document.getElementById("userInput").value = ""; 
 
-            let jsonResponse = await response.json();
-            let botReply = jsonResponse.reply;
-            document.getElementById("chatbox").innerHTML += `<p><b>Bot:</b> ${botReply}</p>`;
+            // Simulating AI Response (Replace this with Make.com later)
+            setTimeout(() => {
+                let botReply = "Hello! This is a test chatbot. Later, this will be powered by AI.";
+                chatbox.innerHTML += `<div class="message bot"><b>Bot:</b> ${botReply}</div><div class="clearfix"></div>`;
+                chatbox.scrollTop = chatbox.scrollHeight;
+            }, 1000);
         }
     </script>
+
 </body>
 </html>
