@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        #chatbox { width: 300px; height: 400px; overflow-y: scroll; border: 1px solid black; padding: 10px; margin: auto; }
+        #userInput { width: 200px; padding: 5px; }
+        button { padding: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Chatbot</h1>
+    <div id="chatbox"></div>
+    <input type="text" id="userInput" placeholder="Type a message...">
+    <button onclick="sendMessage()">Send</button>
+
+    <script>
+        async function sendMessage() {
+            let userMessage = document.getElementById("userInput").value;
+            document.getElementById("chatbox").innerHTML += `<p><b>You:</b> ${userMessage}</p>`;
+            document.getElementById("userInput").value = "";
+
+            let response = await fetch("YOUR_MAKE_WEBHOOK_URL", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ "text": userMessage })
+            });
+
+            let jsonResponse = await response.json();
+            let botReply = jsonResponse.reply;
+            document.getElementById("chatbox").innerHTML += `<p><b>Bot:</b> ${botReply}</p>`;
+        }
+    </script>
+</body>
+</html>
